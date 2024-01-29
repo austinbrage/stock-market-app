@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
-export default function TabTwoScreen() {
+export default function WatchlistScreen() {
   return (
     <View style={styles.container}>
       
