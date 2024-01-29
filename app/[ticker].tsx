@@ -1,9 +1,14 @@
+import { Text } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 
-export default function ModalScreen() {
+export default function TickerScreen() {
+
+  const { ticker } = useLocalSearchParams()
+  
   return (
     <View style={styles.container}>
- 
+      <Text>{ticker}</Text>
     </View>
   );
 }
