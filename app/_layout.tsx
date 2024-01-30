@@ -55,6 +55,6 @@ function RootLayoutNav() {
           <Stack.Screen name="search" options={{ headerShown: false }} />
         </Stack>
       </ThemeProvider>
-    // </PaperProvider>
+    </PaperProvider>
   );
 }
