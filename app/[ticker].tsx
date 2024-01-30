@@ -199,7 +199,7 @@ export default function TickerScreen() {
 
                 <BarChart
                   label='Earnings'
-                  color='dodgergreen'
+                  color='darkgreen'
                   data={stock.earnings}
                 />
 
@@ -229,7 +229,7 @@ export default function TickerScreen() {
 
                 <BarChart
                   label='Net Profit Margin'
-                  color='cornSilk'
+                  color='cornsilk'
                   data={stock.netProfitMargin}
                 />
 
