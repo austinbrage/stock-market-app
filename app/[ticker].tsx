@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
-import { useState } from 'react';
+import { StoredContext } from './_layout';
+import { useState, useContext } from 'react';
 import { BarChart } from '@/components/BarChart';
 import { Text, Button } from 'react-native-paper';
 import { PriceChart } from '@/components/PriceChart';
@@ -12,6 +13,7 @@ import { selectStock, selectStockPrices } from '@/utils/searchStocks';
 export default function TickerScreen() {
 
   const { ticker } = useLocalSearchParams();
+  const { likedStocks, updateLikedStocks } = useContext(StoredContext);
   
   const stock = selectStock(ticker as string);
   const stockPrices = selectStockPrices(ticker as string);
@@ -35,9 +37,15 @@ export default function TickerScreen() {
             size={40}
           />
         </Pressable>
-        <Pressable>
+        <Pressable
+          onPress={() => {
+            likedStocks.includes(ticker as string)
+              ? updateLikedStocks(ticker as string, 'del')
+              : updateLikedStocks(ticker as string, 'add')
+          }}
+        >
           <MaterialCommunityIcons 
-            name='star-outline' 
+            name={likedStocks.includes(ticker as string) ? 'star' : 'star-outline'} 
             color={'white'} 
             size={40} 
           />
