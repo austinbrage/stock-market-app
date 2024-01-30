@@ -1,11 +1,14 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, ThemeProvider } from '@react-navigation/native';
+import { useState, createContext } from 'react';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { PaperProvider } from 'react-native-paper';
+import { PaperProvider, TextInput } from 'react-native-paper';
 import { theme } from '@/theme';
+import { searchStocks } from '@/utils/searchStocks';
+import { type SearchableStock } from '@/data';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -44,16 +47,48 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+export const StoredContext = createContext<{ 
+  searchQuery: string; 
+  setSearchQuery: (text: string) => void;
+  searchedStocks: SearchableStock[];
+  setSearchedStocks: (stocks: SearchableStock[]) => void;
+}>({
+  searchQuery: '', 
+  setSearchQuery: () => {},
+  searchedStocks: [],
+  setSearchedStocks: () => {}
+});
+
 function RootLayoutNav() {
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchedStocks, setSearchedStocks] = useState<SearchableStock[]>([]);
 
   return (
     <PaperProvider theme={theme}>
       <ThemeProvider value={DarkTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="[ticker]" options={{ headerShown: false }} />
-          <Stack.Screen name="search" options={{ headerShown: false }} />
-        </Stack>
+        <StoredContext.Provider
+          value={{ searchQuery, setSearchQuery, searchedStocks, setSearchedStocks }}
+        >
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="[ticker]" options={{ headerShown: false }} />
+            <Stack.Screen name="search" options={{ headerTitle: () => (
+              <TextInput 
+                dense
+                autoFocus 
+                mode='outlined' 
+                placeholder='Search Stocks...' 
+                style={{ width: '88%' }}
+                onChangeText={(text: string) => {
+                  setSearchQuery(text);
+                  const stocks = searchStocks(text);
+                  setSearchedStocks(stocks);
+                }}
+              />
+            )}} />
+          </Stack>
+        </StoredContext.Provider>
       </ThemeProvider>
     </PaperProvider>
   );
