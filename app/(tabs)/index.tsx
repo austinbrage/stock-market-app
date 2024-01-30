@@ -1,26 +1,25 @@
-import { StyleSheet, View } from 'react-native';
+import { StockCard } from '@/components/StockCard';
+import { FlatList, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import { stocks } from '@/data';
 
-export default function TabOneScreen() {
+export default function HomeScreen() {
+
   return (
-    <View style={styles.container}>
-
+    <View style={{ flex: 1, paddingTop: 30 }}>
+      <Text 
+        variant='titleLarge'
+        style={{ fontWeight: 'bold', marginLeft: 5, marginBottom: 5 }}
+      >
+        Available Stocks
+      </Text>
+      <FlatList
+        data={stocks}
+        keyExtractor={(item) => item.ticker}
+        renderItem={({ item }) => (
+          <StockCard item={item}/>
+        )}
+      />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
