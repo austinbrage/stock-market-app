@@ -8,8 +8,9 @@ import { useEffect } from 'react';
 import { PaperProvider, TextInput } from 'react-native-paper';
 import { theme } from '@/theme';
 import { searchStocks } from '@/utils/searchStocks';
-import { type SearchableStock } from '@/data';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { type SearchableStock } from '@/data';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -106,24 +107,26 @@ function RootLayoutNav() {
             updateLikedStocks
           }}
         >
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="[ticker]" options={{ headerShown: false }} />
-            <Stack.Screen name="search" options={{ headerTitle: () => (
-              <TextInput 
-                dense
-                autoFocus 
-                mode='outlined' 
-                placeholder='Search Stocks...' 
-                style={{ width: '88%' }}
-                onChangeText={(text: string) => {
-                  setSearchQuery(text);
-                  const stocks = searchStocks(text);
-                  setSearchedStocks(stocks);
-                }}
-              />
-            )}} />
-          </Stack>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="[ticker]" options={{ headerShown: false }} />
+              <Stack.Screen name="search" options={{ headerTitle: () => (
+                <TextInput 
+                  dense
+                  autoFocus 
+                  mode='outlined' 
+                  placeholder='Search Stocks...' 
+                  style={{ width: '88%' }}
+                  onChangeText={(text: string) => {
+                    setSearchQuery(text);
+                    const stocks = searchStocks(text);
+                    setSearchedStocks(stocks);
+                  }}
+                />
+              )}} />
+            </Stack>
+          </GestureHandlerRootView>
         </StoredContext.Provider>
       </ThemeProvider>
     </PaperProvider>
