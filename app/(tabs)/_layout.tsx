@@ -1,7 +1,8 @@
 import React from 'react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Link, Tabs } from 'expo-router';
+import { Tabs, router } from 'expo-router';
 import { Pressable } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -22,8 +23,6 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
       }}>
       <Tabs.Screen
@@ -31,6 +30,20 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          header: () => (
+            <Pressable
+              onPress={() => router.push('/search')}
+              style={{ width: '100%', paddingHorizontal: 20, paddingTop: 50 }}
+            >
+              <TextInput
+                disabled
+                mode='outlined'
+                onPressIn={() => router.push('/search')}
+                placeholder='Search Stocks...'
+                left={<TextInput.Icon icon={'magnify'} />}
+              />
+            </Pressable>
+          )
         }}
       />
       <Tabs.Screen
